@@ -16,8 +16,11 @@ pygame.display.set_icon(icon)
 
 #load player image and coordinates
 playerImg = pygame.image.load('space-invaders.png')
+#starting position
 playerX = 370 #x axis
 playerY = 480 #y axis
+#x axis location does not change 
+playerX_change = 0
 
 #draw player image on the screen
 #send in changing values of x y coordinates
@@ -34,23 +37,29 @@ while running:
     
     #Creates exit from infinite loop
     for event in pygame.event.get():
-        if event.type == pygame.QUIT():
+        if event.type == pygame.QUIT:
             running = False #Loop stops when someone tries to exit
 
+    
     #After screen fills, player is drawn on top of filled screen
+    playerX += playerX_change
     player(playerX, playerY) #calling player to screen Allow for coordinates to change
     pygame.display.update() #game display continually updates
 
-#If keystroke pressed, note direction
-if event.type == pygame.KEYDOWN:
-    if event.key == pygame.K_LEFT:
-        print('left arrow is pressed')
-    if event.key == pygame.K_RIGHT:
-        print('right arrow is pressed')
-if event.type == pygame.KEYUP:
-    if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-        print('keystroke has been released')
+    #If keystroke pressed, note direction
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_LEFT:
+            playerX_change = -0.3 #move left along x-axis
+        if event.key == pygame.K_RIGHT:
+            playerX_change = 0.3 #move right along x-axis
+    if event.type == pygame.KEYUP:
+        if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+            playerX_change = 0 #stop moving when key is released
 
-
+    #add boundary to keep ship on screen when moving L&R
+    if playerX <= 32: #ship png is 32 pixels wide
+        playerX = 33 #reset position create left-side buffer
+    if playerX >= 768: #right side screen position minus width of ship png
+        playerX = 767 #reset position create right-side buffer
 
 
