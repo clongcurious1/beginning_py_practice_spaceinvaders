@@ -31,7 +31,8 @@ enemyImg = pygame.image.load('angrygreenie.png')
 #starting position is random
 enemyX = random.randint(0, 736)
 enemyY = random.randint(50, 150)
-enemyX_change = 0
+enemyX_change = 0.3
+enemyY_change = 40
 
 #draw player image on the screen
 #send in changing values of x y coordinates
@@ -56,8 +57,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False #Loop stops when someone tries to exit
 
-    #After screen fills, player and enemy are drawn on top of filled screen
-    playerX += playerX_change
+    #After screen fills, player and enemy are drawn on top of filled screen    
     player(playerX, playerY) #call player to screen, allow for coordinates to change
     enemy(enemyX, enemyY) #call enemy to screen, allow for coordinates to change
     pygame.display.update() #game display continually updates
@@ -65,26 +65,30 @@ while running:
     #If keystroke pressed, note direction
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_LEFT:
-            playerX_change = -3 #move left along x-axis
-            enemyX_change = -2 #moves slightly slower than player
+            playerX_change = -1 #move left along x-axis
         if event.key == pygame.K_RIGHT:
-            playerX_change = 3 #move right along x-axis
-            enemyX_change = 2 #moves slightly slower than player
+            playerX_change = 1 #move right along x-axis
     if event.type == pygame.KEYUP:
         if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
             playerX_change = 0 #stop moving when key is released
-
+    
     #player boundary, keep ship on screen when moving L&R
-    if playerX <= 32: #ship png is 32 pixels wide
+    if playerX <= 0: #ship png is 32 pixels wide
         playerX = 33 #reset position create left-side buffer
-    if playerX >= 768: #right side screen position minus width of ship png
-        playerX = 767 #reset position create right-side buffer
+    elif playerX >= 768: #right side screen position minus width of ship png
+        playerX = 733 #reset position create right-side buffer
+
+    #player movement
+    playerX += playerX_change
 
     #enemy boundary, drop-down when reaching left or right boundary
-    #enemies drop down until they get shot or until they drop below the x-axis location of the ship (game ends)
+    #enemies drop down until they get shot or until they drop below the ship's x-axis location (game ends)
     if enemyX <= 32: #when edge of enemy touches LH border... 
-        enemyX = 33 #enemy location on x-axis shifts to the right
-    if enemyX >= 736: #when edge of enemy touches RH border...
-        enemyX = -4 #reset RH enemy location on x-axis
+        enemyX_change = 0.5 #enemy location on x-axis shifts to the right
+        enemyY += enemyY_change #and drops down on the screen
+    elif enemyX >= 768: #when edge of enemy touches RH border...
+        enemyX_change = -0.5 #reset RH enemy location on x-axis
+        enemyY += enemyY_change #and drops down on the screen
         
-
+    #enemy movement
+    enemyX += enemyX_change
