@@ -35,14 +35,13 @@ enemyX_change = 0.3
 enemyY_change = 40
 
 #load bullet image and coordinates
-bulletImg = pygame.image.load('missile.png')
+bulletImg = pygame.image.load('artillery.png')
 #bullet x-axis coordinate must be same as ship's x-coordinate
 bulletX = 370
 bulletY = 480 #shoots from top of player ship
 bulletX_change = 0 #fires straight line so x-axis coordinate is constant 
 bulletY_change = 10 #y-axis coordinate increases as bullets are fired + travel
-#ready state means bullet is not seen on the screen
-bullet_state = "ready" 
+bullet_state = "ready" #bullet is not seen on screen in ready state
 
 #draw player image on the screen
 #send in changing values of x y coordinates
@@ -54,11 +53,11 @@ def enemy(x, y):
     screen.blit(enemyImg, (x, y))
 
 #draw bullets on screen
-def fire_bullet (x, y):
+def bullet_fire (x, y):
 #draw bullet at center of spaceship nose
-    screen.blit(bulletImg, (x + 16,  y + 10))
+    screen.blit(bulletImg, (x,  y + 10))
     global bullet_state 
-    bullet_state = "fire"
+    bullet_state = "ready"
 
 #Game Master Loop
 #Allows game window to stay open while condition is met
@@ -77,6 +76,7 @@ while running:
     #After screen fills, player and enemy are drawn on top of filled screen    
     player(playerX, playerY) #call player to screen, allow for coordinates to change
     enemy(enemyX, enemyY) #call enemy to screen, allow for coordinates to change
+    bullet_fire(bulletX, bulletY)#call bullet to the screen
     pygame.display.update() #game display continually updates
 
     #If keystroke pressed, note direction
@@ -90,7 +90,7 @@ while running:
             #get current x-coordinate of player ship
             #store as bulletX
                 bulletX = playerX
-                fire_bullet(bulletX, bulletY)
+                bullet_fire(bulletX, bulletY)
     
     if event.type == pygame.KEYUP:
         if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -119,7 +119,7 @@ while running:
 
     if bullet_state == "fire":
     #when fired bullet travels independently of player x-coordinate
-        fire_bullet(bulletX, bulletY) 
+        bullet_fire(bulletX, bulletY) 
     
     #bullet movement
     bulletY -= bulletY_change 
