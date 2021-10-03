@@ -77,8 +77,7 @@ while running:
     player(playerX, playerY) #call player to screen, allow for coordinates to change
     enemy(enemyX, enemyY) #call enemy to screen, allow for coordinates to change
     bullet_fire(bulletX, bulletY)#call bullet to the screen
-    pygame.display.update() #game display continually updates
-
+   
     #If keystroke pressed, note direction
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_LEFT:
@@ -129,5 +128,5 @@ while running:
         bulletY = 480
         bullet_state = "ready"
 
-  
+    pygame.display.update() #game display continually updates
   
