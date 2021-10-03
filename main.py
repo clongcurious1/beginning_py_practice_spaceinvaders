@@ -73,10 +73,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False #Loop stops when someone tries to exit
 
-    #After screen fills, player and enemy are drawn on top of filled screen    
-    player(playerX, playerY) #call player to screen, allow for coordinates to change
-    enemy(enemyX, enemyY) #call enemy to screen, allow for coordinates to change
-    bullet_fire(bulletX, bulletY)#call bullet to the screen
+    #After screen fills: player, enemy, bullets are drawn on top of filled screen
+    # allow for coordinates to change    
+    player(playerX, playerY) 
+    enemy(enemyX, enemyY) 
+    bullet_fire(bulletX, bulletY)
    
     #If keystroke pressed, note direction
     if event.type == pygame.KEYDOWN:
