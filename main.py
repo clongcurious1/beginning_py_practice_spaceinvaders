@@ -57,7 +57,7 @@ def bullet_fire (x, y):
 #draw bullet at center of spaceship nose
     screen.blit(bulletImg, (x,  y + 10))
     global bullet_state 
-    bullet_state = "ready"
+    bullet_state = "fire"
 
 #Game Master Loop
 #Allows game window to stay open while condition is met
@@ -73,28 +73,22 @@ while running:
         if event.type == pygame.QUIT:
             running = False #Loop stops when someone tries to exit
 
-    #After screen fills: player, enemy, bullets are drawn on top of filled screen
-    # allow for coordinates to change    
-    player(playerX, playerY) 
-    enemy(enemyX, enemyY) 
-    bullet_fire(bulletX, bulletY)
-   
     #If keystroke pressed, note direction
-    if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_LEFT:
-            playerX_change = -1 #move left along x-axis
-        if event.key == pygame.K_RIGHT:
-            playerX_change = 1 #move right along x-axis
-        if event.key == pygame.K_SPACE: #when space bar is pressed
-            if bullet_state == "ready":
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                playerX_change = -1 #move left along x-axis
+            if event.key == pygame.K_RIGHT:
+                playerX_change = 1 #move right along x-axis
+            if event.key == pygame.K_SPACE: #when space bar is pressed
+                if bullet_state == "ready":
             #get current x-coordinate of player ship
             #store as bulletX
-                bulletX = playerX
-                bullet_fire(bulletX, bulletY)
+                    bulletX = playerX
+                    bullet_fire(bulletX, bulletY)
     
-    if event.type == pygame.KEYUP:
-        if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-            playerX_change = 0 #stop moving when key is released
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                playerX_change = 0 #stop moving when key is released
     
     #player boundary, keep ship on screen when moving L&R
     if playerX <= 0: #ship png is 32 pixels wide
@@ -129,5 +123,10 @@ while running:
         bulletY = 480
         bullet_state = "ready"
 
+    #After screen fills: player, enemy, bullets are drawn on top of filled screen
+    # allow for coordinates to change    
+    player(playerX, playerY) 
+    enemy(enemyX, enemyY) 
+    
     pygame.display.update() #game display continually updates
   
