@@ -32,7 +32,7 @@ enemyImg = pygame.image.load('angrygreenie.png')
 enemyX = random.randint(0, 736)
 enemyY = random.randint(50, 150)
 enemyX_change = 0.3
-enemyY_change = 40
+enemyY_change = 30
 
 #load bullet image and coordinates
 bulletImg = pygame.image.load('artillery.png')
@@ -42,6 +42,8 @@ bulletY = 480 #shoots from top of player ship
 bulletX_change = 0 #fires straight line so x-axis coordinate is constant 
 bulletY_change = 10 #y-axis coordinate increases as bullets are fired + travel
 bullet_state = "ready" #bullet is not seen on screen in ready state
+
+score = 0
 
 #draw player image on the screen
 #send in changing values of x y coordinates
@@ -58,6 +60,15 @@ def bullet_fire (x, y):
     screen.blit(bulletImg, (x,  y + 10))
     global bullet_state 
     bullet_state = "fire"
+
+#defining that Collision occurs based on distance between bullet and enemy
+#using distance formula with square roots and exponential powers
+def isCollision(enemyX, enemyY, bulletX, bulletY):
+    distance = math.sqrt(math.pow(enemyX - bulletX, 2)) + (math.pow(enemyY - bulletY, 2))
+    if distance< 27:
+        return True
+    else:
+        return False
 
 #Game Master Loop
 #Allows game window to stay open while condition is met
@@ -122,6 +133,17 @@ while running:
     if bulletY <= 0:
         bulletY = 480
         bullet_state = "ready"
+    
+    #when Collision occurs
+    collision = isCollision(enemyX, enemyY, bulletX, bulletY)
+    if collision:
+        bulletY = 480 #reset bullet to fire
+        bullet_state = "ready"
+        score += 1 #increase score by 1 each time enemy is shot
+        print(score) #appears in terminal not on screen
+        #after collision occurs enemy respawns to random location
+        enemyX = random.randint(0, 736)
+        enemyY = random.randint(50, 150)
 
     #After screen fills: player, enemy, bullets are drawn on top of filled screen
     # allow for coordinates to change    
