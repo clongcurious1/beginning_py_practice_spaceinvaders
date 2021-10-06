@@ -26,7 +26,7 @@ playerY = 480 #y axis
 #x axis location does not change 
 playerX_change = 0
 
-#load enemy image and coordinates
+#Enemy image load and set coordinates
 enemyImg = pygame.image.load('angrygreenie.png')
 #starting position is random
 enemyX = random.randint(0, 736)
@@ -133,7 +133,7 @@ while running:
     if bulletY <= 0:
         bulletY = 480
         bullet_state = "ready"
-    
+
     #when Collision occurs
     collision = isCollision(enemyX, enemyY, bulletX, bulletY)
     if collision:
@@ -144,7 +144,7 @@ while running:
         #after collision occurs enemy respawns to random location
         enemyX = random.randint(0, 736)
         enemyY = random.randint(50, 150)
-
+    
     #After screen fills: player, enemy, bullets are drawn on top of filled screen
     # allow for coordinates to change    
     player(playerX, playerY) 
